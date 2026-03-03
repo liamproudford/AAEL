@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify
 import requests
 
@@ -12,3 +13,5 @@ def get_characters():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
