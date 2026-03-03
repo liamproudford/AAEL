@@ -3,6 +3,7 @@ import requests
 
 app = Flask(__name__)
 
+#api key >>
 @app.route('/characters')
 def get_characters():
     response = requests.get("https://swapi.dev/api/people/")
