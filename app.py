@@ -28,6 +28,8 @@ def test_db():
     conn.close()
     return jsonify({"status": "Database connected!"})
 
+#got a new laptop test
+
 if __name__ == '__main__':
     app.run(debug=True)
 
