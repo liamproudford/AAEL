@@ -1,5 +1,5 @@
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request
 import requests
 import psycopg
 import os
@@ -15,9 +15,18 @@ def home():
 
 @app.route('/characters')
 def get_characters():
-    response = requests.get("https://swapi.dev/api/people/")
+    page = request.args.get('page', 1, type=int)
+    response = requests.get(f"https://swapi.dev/api/people/?page={page}")
     data = response.json()
-    return jsonify(data)
+    characters = data.get('results', [])
+    total = data.get('count', 0)
+    total_pages = -(-total // 10)  # ceiling division
+    return render_template(
+        'characters.html',
+        characters=characters,
+        page=page,
+        total_pages=total_pages
+    )
 
 @app.route('/test-db')
 def test_db():
@@ -36,5 +45,3 @@ def test_db():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

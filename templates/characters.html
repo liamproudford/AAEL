@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Characters — Star Wars Explorer{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-inner">
+        <p class="hero-eyebrow">The Galaxy's Finest</p>
+        <h1 class="page-title">Characters</h1>
+        <p class="page-subtitle">Every hero, villain, and scoundrel from across the Star Wars universe.</p>
+    </div>
+</section>
+
+<section class="characters-section">
+    <div class="character-grid">
+        {% for character in characters %}
+        <div class="character-card">
+            <div class="character-name">{{ character.name }}</div>
+            <ul class="character-stats">
+                <li><span class="stat-label">Born</span><span class="stat-value">{{ character.birth_year }}</span></li>
+                <li><span class="stat-label">Height</span><span class="stat-value">{{ character.height }} cm</span></li>
+                <li><span class="stat-label">Mass</span><span class="stat-value">{{ character.mass }} kg</span></li>
+                <li><span class="stat-label">Gender</span><span class="stat-value">{{ character.gender }}</span></li>
+                <li><span class="stat-label">Eyes</span><span class="stat-value">{{ character.eye_color }}</span></li>
+                <li><span class="stat-label">Hair</span><span class="stat-value">{{ character.hair_color }}</span></li>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/characters?page={{ page - 1 }}" class="page-btn">&larr; Prev</a>
+        {% else %}
+        <span class="page-btn disabled">&larr; Prev</span>
+        {% endif %}
+
+        <span class="page-indicator">Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+        <a href="/characters?page={{ page + 1 }}" class="page-btn">Next &rarr;</a>
+        {% else %}
+        <span class="page-btn disabled">Next &rarr;</span>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
