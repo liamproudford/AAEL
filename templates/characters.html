@@ -12,21 +12,31 @@
 </section>
 
 <section class="characters-section">
-    <div class="character-grid">
-        {% for character in characters %}
-        <div class="character-card">
-            <div class="character-name">{{ character.name }}</div>
-            <ul class="character-stats">
-                <li><span class="stat-label">Born</span><span class="stat-value">{{ character.birth_year }}</span></li>
-                <li><span class="stat-label">Height</span><span class="stat-value">{{ character.height }} cm</span></li>
-                <li><span class="stat-label">Mass</span><span class="stat-value">{{ character.mass }} kg</span></li>
-                <li><span class="stat-label">Gender</span><span class="stat-value">{{ character.gender }}</span></li>
-                <li><span class="stat-label">Eyes</span><span class="stat-value">{{ character.eye_color }}</span></li>
-                <li><span class="stat-label">Hair</span><span class="stat-value">{{ character.hair_color }}</span></li>
-            </ul>
-        </div>
-        {% endfor %}
+
+    <div class="filters-bar">
+        <select id="filter-faction" class="filter-select">
+            <option value="">All Factions</option>
+            <option value="Jedi">Jedi</option>
+            <option value="Sith">Sith</option>
+            <option value="Rebel">Rebel</option>
+            <option value="Empire">Empire</option>
+        </select>
+        <select id="filter-species" class="filter-select">
+            <option value="">All Species</option>
+            <option value="Human">Human</option>
+            <option value="Droid">Droid</option>
+            <option value="Alien">Alien</option>
+        </select>
+        <select id="filter-gender" class="filter-select">
+            <option value="">All Genders</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
     </div>
+
+    <p id="no-results" class="no-results hidden">No characters match the selected filters.</p>
+    <div class="character-grid" id="character-grid"></div>
 
     <div class="pagination">
         {% if page > 1 %}
@@ -44,4 +54,137 @@
         {% endif %}
     </div>
 </section>
+
+<script>
+const CHARACTERS = {{ characters | tojson }};
+
+// Faction is not in the SWAPI response — mapped by character name from lore.
+const FACTION_MAP = {
+    // Jedi Order
+    "Luke Skywalker":        "Jedi",
+    "Obi-Wan Kenobi":        "Jedi",
+    "Yoda":                  "Jedi",
+    "Mace Windu":            "Jedi",
+    "Qui-Gon Jinn":          "Jedi",
+    "Anakin Skywalker":      "Jedi",
+    "Ki-Adi-Mundi":          "Jedi",
+    "Kit Fisto":             "Jedi",
+    "Plo Koon":              "Jedi",
+    "Adi Gallia":            "Jedi",
+    "Saesee Tiin":           "Jedi",
+    "Eeth Koth":             "Jedi",
+    "Yarael Poof":           "Jedi",
+    "Luminara Unduli":       "Jedi",
+    "Barriss Offee":         "Jedi",
+    "Shaak Ti":              "Jedi",
+    "Jocasta Nu":            "Jedi",
+    "Aayla Secura":          "Jedi",
+    // Sith
+    "Darth Vader":           "Sith",
+    "Palpatine":             "Sith",
+    "Darth Maul":            "Sith",
+    "Dooku":                 "Sith",
+    // Rebel Alliance
+    "Leia Organa":           "Rebel",
+    "Han Solo":              "Rebel",
+    "Chewbacca":             "Rebel",
+    "C-3PO":                 "Rebel",
+    "R2-D2":                 "Rebel",
+    "Lando Calrissian":      "Rebel",
+    "Mon Mothma":            "Rebel",
+    "Ackbar":                "Rebel",
+    "Biggs Darklighter":     "Rebel",
+    "Wedge Antilles":        "Rebel",
+    "Bail Prestor Organa":   "Rebel",
+    "Arvel Crynyd":          "Rebel",
+    "Nien Nunb":             "Rebel",
+    "Wicket Systri Warrick": "Rebel",
+    "Raymus Antilles":       "Rebel",
+    "Finn":                  "Rebel",
+    "Rey":                   "Rebel",
+    "Poe Dameron":           "Rebel",
+    "BB-8":                  "Rebel",
+    // Galactic Empire / First Order
+    "Wilhuff Tarkin":        "Empire",
+    "Boba Fett":             "Empire",
+    "IG-88":                 "Empire",
+    "Bossk":                 "Empire",
+    "Captain Phasma":        "Empire",
+    "Sly Moore":             "Empire",
+    "Mas Amedda":            "Empire",
+    "Nute Gunray":           "Empire",
+    "Poggle the Lesser":     "Empire",
+    "Wat Tambor":            "Empire",
+    "San Hill":              "Empire",
+    "Grievous":              "Empire",
+};
+
+// species field is an array of URLs.
+// SWAPI quirk: humans have an empty species array.
+// Droid species URL contains /species/2/.
+function deriveSpecies(character) {
+    if (character.species.length === 0) return "Human";
+    if (character.species[0].includes('/2/')) return "Droid";
+    return "Alien";
+}
+
+// gender field values: "male", "female", "n/a", "none", "hermaphrodite"
+function deriveGender(character) {
+    const g = character.gender;
+    if (g === "male") return "male";
+    if (g === "female") return "female";
+    return "other";
+}
+
+function renderCards(list) {
+    const grid = document.getElementById('character-grid');
+    const noResults = document.getElementById('no-results');
+    grid.innerHTML = '';
+
+    if (list.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+    }
+    noResults.classList.add('hidden');
+
+    list.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        card.innerHTML = `
+            <div class="character-name">${c.name}</div>
+            <ul class="character-stats">
+                <li><span class="stat-label">Born</span><span class="stat-value">${c.birth_year}</span></li>
+                <li><span class="stat-label">Height</span><span class="stat-value">${c.height} cm</span></li>
+                <li><span class="stat-label">Mass</span><span class="stat-value">${c.mass} kg</span></li>
+                <li><span class="stat-label">Gender</span><span class="stat-value">${c.gender}</span></li>
+                <li><span class="stat-label">Eyes</span><span class="stat-value">${c.eye_color}</span></li>
+                <li><span class="stat-label">Hair</span><span class="stat-value">${c.hair_color}</span></li>
+            </ul>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function applyFilters() {
+    const faction = document.getElementById('filter-faction').value;
+    const species = document.getElementById('filter-species').value;
+    const gender  = document.getElementById('filter-gender').value;
+
+    const filtered = CHARACTERS.filter(c => {
+        if (faction && (FACTION_MAP[c.name] || null) !== faction) return false;
+        if (species && deriveSpecies(c) !== species) return false;
+        if (gender  && deriveGender(c)  !== gender)  return false;
+        return true;
+    });
+
+    renderCards(filtered);
+}
+
+// Initial render with no filters applied
+renderCards(CHARACTERS);
+
+['filter-faction', 'filter-species', 'filter-gender'].forEach(id => {
+    document.getElementById(id).addEventListener('change', applyFilters);
+});
+</script>
 {% endblock %}
