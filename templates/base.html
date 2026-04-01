@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Star Wars Explorer{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">&#9733; SW Explorer</a>
+        <ul class="nav-links">
+            <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+            <li><a href="/characters" class="{% if request.path == '/characters' %}active{% endif %}">Characters</a></li>
+            <li><a href="/planets" class="{% if request.path == '/planets' %}active{% endif %}">Planets</a></li>
+            <li><a href="/compare" class="{% if request.path == '/compare' %}active{% endif %}">Compare</a></li>
+            <li><a href="/quiz" class="{% if request.path == '/quiz' %}active{% endif %}">Quiz</a></li>
+            <li><a href="/leaderboard" class="{% if request.path == '/leaderboard' %}active{% endif %}">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>A long time ago in a galaxy far, far away&hellip;</p>
+    </footer>
+</body>
+</html>

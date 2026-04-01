@@ -1,0 +1,193 @@
+/* ── Reset & base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --black:      #0a0a0a;
+    --dark:       #111111;
+    --dark-card:  #1a1a1a;
+    --border:     #2a2a2a;
+    --yellow:     #FFE81F;
+    --yellow-dim: #c9b800;
+    --white:      #f0f0f0;
+    --grey:       #888888;
+    --font:       'Segoe UI', Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: var(--font);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Navbar ───────────────────────────────────────────────── */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 56px;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--yellow);
+    white-space: nowrap;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.nav-links a {
+    display: block;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--grey);
+    border-radius: 3px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--yellow);
+    background: rgba(255, 232, 31, 0.07);
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 52vh;
+    padding: 4rem 1.5rem;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255,232,31,0.06) 0%, transparent 70%),
+        var(--black);
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-inner { max-width: 680px; }
+
+.hero-eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.05;
+    color: var(--yellow);
+    text-shadow: 0 0 40px rgba(255,232,31,0.25);
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--grey);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ── Cards section ────────────────────────────────────────── */
+.cards-section {
+    padding: 4rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.cards-heading {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 2rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--dark-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    border-color: var(--yellow-dim);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,232,31,0.08);
+}
+
+.card-icon {
+    font-size: 1.6rem;
+    color: var(--yellow);
+    line-height: 1;
+}
+
+.card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--white);
+}
+
+.card p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--grey);
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--border);
+    border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .navbar { padding: 0 1rem; }
+    .nav-brand { font-size: 0.95rem; }
+    .nav-links a { padding: 0.35rem 0.55rem; font-size: 0.75rem; }
+    .cards-section { padding: 2.5rem 1rem; }
+}

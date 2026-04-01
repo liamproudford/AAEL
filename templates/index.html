@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Star Wars Explorer — Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <p class="hero-eyebrow">A long time ago in a galaxy far, far away&hellip;</p>
+        <h1 class="hero-title">STAR WARS<br>EXPLORER</h1>
+        <p class="hero-subtitle">
+            Dive into the galaxy. Browse characters and planets, pit your favourites
+            against each other, and test your knowledge of the Force.
+        </p>
+    </div>
+</section>
+
+<section class="cards-section">
+    <h2 class="cards-heading">Explore the Galaxy</h2>
+    <div class="card-grid">
+
+        <a href="/characters" class="card">
+            <div class="card-icon">&#9876;</div>
+            <h3>Characters</h3>
+            <p>Browse every hero, villain, and scoundrel in the Star Wars universe pulled live from the galaxy database.</p>
+        </a>
+
+        <a href="/planets" class="card">
+            <div class="card-icon">&#9711;</div>
+            <h3>Planets</h3>
+            <p>Explore the worlds of the galaxy — from the desert wastes of Tatooine to the forests of Endor.</p>
+        </a>
+
+        <a href="/compare" class="card">
+            <div class="card-icon">&#9878;</div>
+            <h3>Compare</h3>
+            <p>Choose any two characters or planets and see them head-to-head across stats and lore.</p>
+        </a>
+
+        <a href="/quiz" class="card">
+            <div class="card-icon">&#10067;</div>
+            <h3>Quiz</h3>
+            <p>Think you know the galaxy? Put your knowledge to the test with randomised Star Wars trivia.</p>
+        </a>
+
+        <a href="/leaderboard" class="card">
+            <div class="card-icon">&#9733;</div>
+            <h3>Leaderboard</h3>
+            <p>See how your quiz scores stack up against the greatest minds in the Jedi Order.</p>
+        </a>
+
+    </div>
+</section>
+{% endblock %}
