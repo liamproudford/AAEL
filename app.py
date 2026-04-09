@@ -28,6 +28,21 @@ def get_characters():
         total_pages=total_pages
     )
 
+@app.route('/planets')
+def get_planets():
+    page = request.args.get('page', 1, type=int)
+    response = requests.get(f"https://swapi.dev/api/planets/?page={page}")
+    data = response.json()
+    planets = data.get('results', [])
+    total = data.get('count', 0)
+    total_pages = -(-total // 10)  # ceiling division
+    return render_template(
+        'planets.html',
+        planets=planets,
+        page=page,
+        total_pages=total_pages
+    )
+
 @app.route('/test-db')
 def test_db():
     conn = psycopg.connect(

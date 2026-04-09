@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Planets — Star Wars Explorer{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-inner">
+        <p class="hero-eyebrow">The Galaxy's Worlds</p>
+        <h1 class="page-title">Planets</h1>
+        <p class="page-subtitle">From the desert wastes of Tatooine to the forests of Endor.</p>
+    </div>
+</section>
+
+<section class="characters-section">
+    <div class="character-grid">
+        {% for planet in planets %}
+        <div class="character-card">
+            <div class="character-name">{{ planet.name }}</div>
+            <ul class="character-stats">
+                <li><span class="stat-label">Climate</span><span class="stat-value">{{ planet.climate }}</span></li>
+                <li><span class="stat-label">Terrain</span><span class="stat-value">{{ planet.terrain }}</span></li>
+                <li><span class="stat-label">Population</span><span class="stat-value">{{ planet.population }}</span></li>
+                <li><span class="stat-label">Diameter</span><span class="stat-value">{{ planet.diameter }} km</span></li>
+                <li><span class="stat-label">Gravity</span><span class="stat-value">{{ planet.gravity }}</span></li>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="/planets?page={{ page - 1 }}" class="page-btn">&larr; Prev</a>
+        {% else %}
+        <span class="page-btn disabled">&larr; Prev</span>
+        {% endif %}
+
+        <span class="page-indicator">Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+        <a href="/planets?page={{ page + 1 }}" class="page-btn">Next &rarr;</a>
+        {% else %}
+        <span class="page-btn disabled">Next &rarr;</span>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
