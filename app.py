@@ -235,6 +235,6 @@ def status():
         "swapi": {"ok": swapi_ok, "error": swapi_err},
     }), 200
 
-
+#
 if __name__ == '__main__':
     app.run(debug=os.getenv("FLASK_DEBUG", "false").lower() == "true")
