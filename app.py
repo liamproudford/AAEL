@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template, request, session, redirect, u
 import requests
 import os
 import random
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,6 +10,22 @@ load_dotenv()
 app = Flask(__name__)
 _secret = os.getenv("SECRET_KEY", "insecure-default-do-not-use-in-production")
 app.secret_key = _secret
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+
+@app.before_request
+def log_request():
+    logging.info("Incoming request: %s %s", request.method, request.path)
+
+
+@app.after_request
+def log_response(response):
+    logging.info("Response: %s for %s %s", response.status_code, request.method, request.path)
+    return response
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
