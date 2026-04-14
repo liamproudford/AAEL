@@ -53,7 +53,7 @@ def get_characters():
         page=page,
         total_pages=total_pages
     )
-
+#f this project
 
 @app.route('/test-db')
 def test_db():
