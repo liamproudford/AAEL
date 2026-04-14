@@ -5,15 +5,7 @@ os.environ["SECRET_KEY"] = "test-secret-key"
 os.environ["SUPABASE_URL"] = "https://test.supabase.co"
 os.environ["SUPABASE_KEY"] = "test-key"
 
-import pytest
 from app import app
-
-
-@pytest.fixture
-def client():
-    app.config["TESTING"] = True
-    with app.test_client() as c:
-        yield c
 
 
 def _mock_response(json_data=None):
@@ -24,26 +16,30 @@ def _mock_response(json_data=None):
     return mock
 
 
-def test_home(client):
+def test_home():
+    client = app.test_client()
     assert client.get('/').status_code == 200
 
 
-@patch("requests.get")
-def test_characters(mock_get, client):
+@patch("app.requests.get")
+def test_characters(mock_get):
+    client = app.test_client()
     mock_get.return_value = _mock_response({"results": [], "count": 0})
     assert client.get('/characters').status_code == 200
 
 
-@patch("requests.get")
-def test_health(mock_get, client):
+@patch("app.requests.get")
+def test_health(mock_get):
+    client = app.test_client()
     mock_get.return_value = _mock_response()
     response = client.get('/health')
     assert response.status_code == 200
     assert "status" in response.get_json()
 
 
-@patch("requests.get")
-def test_status(mock_get, client):
+@patch("app.requests.get")
+def test_status(mock_get):
+    client = app.test_client()
     mock_get.return_value = _mock_response()
     response = client.get('/status')
     assert response.status_code == 200
