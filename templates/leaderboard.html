@@ -39,8 +39,8 @@
                         {% for score in scores %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>{{ score[0] }}</td>
-                            <td>{{ score[1] }}</td>
+                            <td>{{ score.name }}</td>
+                            <td>{{ score.score }}</td>
                         </tr>
                         {% endfor %}
                     {% else %}

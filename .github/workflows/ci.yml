@@ -26,6 +26,10 @@ jobs:
           ruff check .
 
       - name: Test
+        env:
+          SECRET_KEY: ci-test-secret
+          SUPABASE_URL: https://placeholder.supabase.co
+          SUPABASE_KEY: placeholder-key
         run: |
           pip install pytest pytest-cov
           pytest --cov=app tests/
