@@ -20,6 +20,7 @@ External API: SWAPI
 Config: python-dotenv
 
 ## Project Structure
+```
 AAEL/
 ├── app.py
 ├── .env.example
@@ -35,6 +36,7 @@ AAEL/
     ├── compare_results.html
     ├── compare_stats.html
     └── error.html
+```
 
 ## Setup
 1. Clone the repository
