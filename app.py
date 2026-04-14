@@ -57,7 +57,7 @@ def leaderboard():
         )
 
         cur = conn.cursor()
-        cur.execute("SELECT name, score FROM leaderboard ORDER BY score DESC LIMIT 10;")
+        cur.execute('SELECT name, score FROM "Leaderboard" ORDER BY score DESC LIMIT 10;')
         rows = cur.fetchall()
 
         cur.close()
@@ -65,11 +65,11 @@ def leaderboard():
 
         return render_template('leaderboard.html', scores=rows)
 
-    except psycopg.Error:
+    except psycopg.Error as e:
         return jsonify({
-            "error": "Unable to load leaderboard"
+            "error": "Unable to load leaderboard",
+            "details": str(e)
         }), 503
-    # Runs Leaderboard page
 
 if __name__ == '__main__':
     app.run(debug=True)
