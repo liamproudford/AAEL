@@ -43,5 +43,33 @@ def test_db():
 
 #got a new laptop test
 
+# Leaderboard page
+@app.route('/leaderboard')
+def leaderboard():
+    try:
+        conn = psycopg.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            sslmode="require"
+        )
+
+        cur = conn.cursor()
+        cur.execute("SELECT name, score FROM leaderboard ORDER BY score DESC LIMIT 10;")
+        rows = cur.fetchall()
+
+        cur.close()
+        conn.close()
+
+        return render_template('leaderboard.html', scores=rows)
+
+    except psycopg.Error:
+        return jsonify({
+            "error": "Unable to load leaderboard"
+        }), 503
+    # Runs Leaderboard page
+
 if __name__ == '__main__':
     app.run(debug=True)
