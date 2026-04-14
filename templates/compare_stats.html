@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}All Results — Star Wars Explorer{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-inner">
+        <p class="hero-eyebrow">Final Standings</p>
+        <h1 class="page-title">All Matchup Results</h1>
+        <p class="page-subtitle">You've voted on all 10 showdowns. Here's how the galaxy decided.</p>
+    </div>
+</section>
+
+<section class="stats-section">
+    {% if most_dominant %}
+    <div class="stats-highlights">
+        <div class="highlight-card">
+            <span class="highlight-label">Most Dominant Winner</span>
+            <span class="highlight-value">{{ most_dominant.winner }} ({{ most_dominant.winner_pct }}%)</span>
+        </div>
+        {% if closest %}
+        <div class="highlight-card">
+            <span class="highlight-label">Closest Matchup</span>
+            <span class="highlight-value">{{ closest.character1 }} vs {{ closest.character2 }} ({{ closest.winner_pct }}%)</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="stats-list">
+        {% for m in matchup_results %}
+        <div class="stats-matchup">
+            <div class="stats-matchup-header">
+                <span class="stats-matchup-num">Matchup {{ m.matchup_num }}</span>
+                <span class="stats-matchup-title">{{ m.character1 }} vs {{ m.character2 }}</span>
+            </div>
+            <div class="stats-bars">
+                <div class="stats-bar-row">
+                    <span class="stats-bar-label">{{ m.character1 }}</span>
+                    <div class="stats-bar-container">
+                        <div class="stats-bar{% if m.char1_votes > m.char2_votes %} winner{% endif %}" style="width: {{ m.char1_pct }}%"></div>
+                    </div>
+                    <span class="stats-bar-pct">{{ m.char1_pct }}%</span>
+                </div>
+                <div class="stats-bar-row">
+                    <span class="stats-bar-label">{{ m.character2 }}</span>
+                    <div class="stats-bar-container">
+                        <div class="stats-bar{% if m.char2_votes > m.char1_votes %} winner{% endif %}" style="width: {{ m.char2_pct }}%"></div>
+                    </div>
+                    <span class="stats-bar-pct">{{ m.char2_pct }}%</span>
+                </div>
+            </div>
+            <div class="stats-matchup-total">{{ m.total_votes }} total vote{{ '' if m.total_votes == 1 else 's' }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="stats-actions">
+        <a class="quiz-btn-link" href="/compare/reset">Start Over</a>
+    </div>
+</section>
+{% endblock %}

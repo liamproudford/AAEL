@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Results — Star Wars Explorer{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-inner">
+        <p class="hero-eyebrow">The Galaxy Has Spoken</p>
+        <h1 class="page-title">You Voted {{ winner_name }}</h1>
+        <p class="page-subtitle">Here's how others voted in this matchup.</p>
+    </div>
+</section>
+
+<section class="results-section">
+    <div class="results-grid">
+        <div class="result-card{% if char1_votes > char2_votes %} winner{% endif %}">
+            <div class="result-character-name">{{ character1 }}</div>
+            <div class="result-bar-container">
+                <div class="result-bar" style="width: {{ char1_pct }}%"></div>
+            </div>
+            <div class="result-stats">
+                <span class="result-percentage">{{ char1_pct }}%</span>
+                <span class="result-votes">{{ char1_votes }} vote{{ '' if char1_votes == 1 else 's' }}</span>
+            </div>
+        </div>
+
+        <div class="result-card{% if char2_votes > char1_votes %} winner{% endif %}">
+            <div class="result-character-name">{{ character2 }}</div>
+            <div class="result-bar-container">
+                <div class="result-bar" style="width: {{ char2_pct }}%"></div>
+            </div>
+            <div class="result-stats">
+                <span class="result-percentage">{{ char2_pct }}%</span>
+                <span class="result-votes">{{ char2_votes }} vote{{ '' if char2_votes == 1 else 's' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <p class="results-total">Total votes in this matchup: <strong>{{ total_votes }}</strong></p>
+
+    <div class="results-actions">
+        <a class="quiz-btn-link" href="/compare">Next Matchup &rarr;</a>
+    </div>
+</section>
+{% endblock %}

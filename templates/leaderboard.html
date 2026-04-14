@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | Star Wars Explorer</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">STAR WARS EXPLORER</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/characters">Characters</a></li>
+            <li><a href="/leaderboard" class="active">Leaderboard</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <div class="page-header-inner">
+            <h1 class="page-title">Leaderboard</h1>
+            <p class="page-subtitle">Top quiz scores from across the galaxy.</p>
+        </div>
+    </header>
+
+    <main class="characters-section">
+        <div class="leaderboard-wrapper">
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if scores %}
+                        {% for score in scores %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ score[0] }}</td>
+                            <td>{{ score[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="3" class="leaderboard-empty">
+                                No scores available yet.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <div class="leaderboard-actions">
+                <a href="/" class="page-btn">Back to Home Planet</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        MAY THE FORCE BE WITH YOU
+    </footer>
+
+</body>
+</html>
