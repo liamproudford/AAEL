@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz — Star Wars Explorer{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="page-header-inner">
+        <p class="hero-eyebrow">Test Your Knowledge</p>
+        <h1 class="page-title">Who Am I?</h1>
+        <p class="page-subtitle">Guess the Star Wars character from the clues. Fewer clues = more points.</p>
+    </div>
+</section>
+
+<section class="characters-section">
+    <div class="quiz-container">
+
+        {% if state == 'playing' %}
+            <div class="quiz-clues">
+                <h2 class="quiz-clues-title">Clues revealed: {{ clues_shown }} / 5</h2>
+                <ul class="quiz-clue-list">
+                    {% for clue in clues %}
+                    <li class="character-card quiz-clue-item">
+                        <span class="stat-label">{{ clue[0] }}</span>
+                        <span class="stat-value quiz-clue-value">{{ clue[1] }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if wrong %}
+            <p class="quiz-feedback quiz-feedback--wrong">Wrong! Here is your next clue.</p>
+            {% endif %}
+
+            <form method="POST" action="/quiz" class="quiz-form">
+                <input
+                    type="text"
+                    name="guess"
+                    placeholder="Enter character name..."
+                    class="quiz-input"
+                    autofocus
+                    required
+                />
+                <button type="submit" class="page-btn">Submit Guess</button>
+            </form>
+
+            <div class="quiz-scoring-hint">
+                <p>Points available: <strong>{{ 6 - clues_shown }}</strong></p>
+            </div>
+
+        {% elif state == 'correct' %}
+            <div class="character-card quiz-result quiz-result--correct">
+                <p class="quiz-result-label">Correct!</p>
+                <p class="quiz-result-character">{{ character_name }}</p>
+                <p class="quiz-result-score">You scored <strong>{{ score }}</strong> point{{ 's' if score != 1 else '' }}</p>
+            </div>
+
+            <form method="POST" action="/quiz/submit" class="quiz-form quiz-submit-form">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter your name for the leaderboard..."
+                    class="quiz-input"
+                    required
+                />
+                <button type="submit" class="page-btn">Save Score</button>
+            </form>
+            <div class="quiz-actions">
+                <a href="/quiz" class="page-btn">Play Again</a>
+            </div>
+
+        {% elif state == 'gameover' %}
+            <div class="character-card quiz-result quiz-result--gameover">
+                <p class="quiz-result-label">Out of clues!</p>
+                <p class="quiz-result-character">{{ character_name }}</p>
+                <p class="quiz-result-score">Better luck next time.</p>
+            </div>
+            <div class="quiz-actions">
+                <a href="/quiz" class="page-btn">Try Again</a>
+                <a href="/leaderboard" class="page-btn">Leaderboard</a>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
