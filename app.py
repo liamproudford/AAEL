@@ -177,7 +177,6 @@ def quiz_submit():
         return render_template('error.html', message="Username cannot be empty"), 400
 
     score = session.get('score', 0)
-    character_name = session.get('character_name', '')
 
     try:
         response = requests.post(
@@ -187,7 +186,7 @@ def quiz_submit():
             timeout=5
         )
         response.raise_for_status()
-    except requests.RequestException as e:
+    except requests.RequestException:
         return render_template('error.html', message="Could not save score. Please try again."), 503
 
     session.clear()
