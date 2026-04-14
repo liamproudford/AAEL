@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, render_template, request, session, redirect, url_for
 import requests
 import os
@@ -8,9 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-_secret = os.getenv("SECRET_KEY")
-if not _secret:
-    raise RuntimeError("SECRET_KEY environment variable is not set")
+_secret = os.getenv("SECRET_KEY", "insecure-default-do-not-use-in-production")
 app.secret_key = _secret
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
