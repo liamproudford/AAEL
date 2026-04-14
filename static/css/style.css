@@ -800,4 +800,38 @@ a { color: inherit; text-decoration: none; }
     display: flex;
     gap: 1rem;
     justify-content: center;
+/* ── Error page ────────────────────────────────────────────── */
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.error-container h1 {
+    font-size: 2rem;
+    color: var(--yellow);
+}
+
+.error-container p {
+    color: var(--grey);
+    font-size: 1.1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: var(--yellow);
+    color: var(--black);
+    font-weight: 700;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: var(--yellow-dim);
 }
