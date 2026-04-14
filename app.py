@@ -30,6 +30,45 @@ def _check_swapi():
         return False, str(e)
 
 
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+
+def _supabase_headers():
+    return {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}"
+    }
+
+def _db_connect():
+    return psycopg.connect(
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT"),
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        sslmode="require"
+    )
+
+
+def _check_db():
+    try:
+        conn = _db_connect()
+        conn.close()
+        return True, None
+    except psycopg.Error as e:
+        return False, str(e)
+
+
+def _check_swapi():
+    try:
+        response = requests.get("https://swapi.dev/api/people/1/", timeout=5)
+        response.raise_for_status()
+        return True, None
+    except requests.RequestException as e:
+        return False, str(e)
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
